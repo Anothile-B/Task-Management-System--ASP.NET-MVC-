@@ -1,0 +1,7 @@
+# Ignore Visual Studio / C# temporary files
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.log

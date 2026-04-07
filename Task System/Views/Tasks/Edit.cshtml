@@ -1,0 +1,98 @@
+﻿@model Task_System.Models.TaskItem
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container mt-4">
+    <h2 class="mb-3">Edit Task</h2>
+
+    <form method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label">Title</label>
+            <input asp-for="Title" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3 row">
+            <div class="col-md-4">
+                <label asp-for="DueDate" class="form-label">Due Date</label>
+                <input asp-for="DueDate" type="date" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="Priority" class="form-label">Priority</label>
+                <select asp-for="Priority" class="form-select">
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="AssignedTo" class="form-label">Assign To</label>
+                <select asp-for="AssignedTo" class="form-select">
+                    @if (ViewBag.Employees != null)
+                    {
+                        foreach (var emp in ViewBag.Employees as List<string>)
+                        {
+                            <option selected="@(emp == Model.AssignedTo ? "selected" : "")">@emp</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Status" class="form-label">Status</label>
+            <select asp-for="Status" class="form-select">
+                <option>Pending</option>
+                <option>In Progress</option>
+                <option>Completed</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Progress" class="form-label">Progress</label>
+            <input asp-for="Progress" type="range" class="form-range" min="0" max="100" step="5" value="@Model.Progress" />
+            <span id="progressValue">0%</span>
+        </div>
+
+        <button class="btn btn-success">Update Task</button>
+        <a href="/Tasks/Index" class="btn btn-secondary">Cancel</a>
+    </form>
+
+    <hr />
+    <h4>Comments</h4>
+    <form method="post" action="/Tasks/AddComment/@Model.Id">
+        <div class="input-group mb-3">
+            <input type="text" name="comment" class="form-control" placeholder="Add a comment..." />
+            <button class="btn btn-primary">Add</button>
+        </div>
+    </form>
+
+    <ul class="list-group">
+        @if (Model.Comments != null && Model.Comments.Any())
+        {
+            @foreach (var c in Model.Comments)
+            {
+                <li class="list-group-item">@c</li>
+            }
+        }
+        else
+        {
+            <li class="list-group-item text-muted">No comments yet</li>
+        }
+    </ul>
+</div>
+
+<script>
+    const progressInput = document.querySelector('input[name="Progress"]');
+    const progressValue = document.getElementById('progressValue');
+    progressInput.addEventListener('input', () => {
+        progressValue.innerText = progressInput.value + '%';
+    });
+</script>

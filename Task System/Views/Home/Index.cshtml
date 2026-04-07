@@ -1,0 +1,204 @@
+﻿@model IEnumerable<Task_System.Models.TaskItem>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    body {
+        background: linear-gradient(135deg, grey);
+        color: #f1f5f9;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 25px;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+
+    .task-card {
+        background: rgba(255, 255, 255, 0.07);
+        border: none;
+        border-radius: 15px;
+        transition: 0.3s;
+    }
+
+        .task-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+    .btn-modern {
+        border: none;
+        border-radius: 10px;
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        transition: 0.3s;
+    }
+
+    .btn-complete {
+        background: green;
+        color: white;
+    }
+
+    .btn-edit {
+        background: blue;
+        color: white;
+    }
+
+    .btn-delete {
+        background: red;
+        color: white;
+    }
+
+    .btn-modern:hover {
+        opacity: 0.85;
+        transform: scale(1.05);
+    }
+
+    .badge {
+        border-radius: 8px;
+        padding: 5px 10px;
+    }
+
+    .badge-high {
+        background: red;
+    }
+
+    .badge-medium {
+        background: yellow;
+    }
+
+    .badge-low {
+        background: green;
+    }
+
+    .progress {
+        height: 8px;
+        border-radius: 10px;
+        background: #1e293b;
+    }
+
+    .progress-bar {
+        background: linear-gradient(90deg, blue, green);
+    }
+
+    .stat-card {
+        background: rgba(255,255,255,0.08);
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+    .stat-number {
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+</style>
+
+@{
+    var total = Model?.Count() ?? 0;
+    var completed = Model?.Count(t => t.IsCompleted) ?? 0;
+    var pending = Model?.Count(t => !t.IsCompleted) ?? 0;
+    var overdue = Model?.Count(t => t.DueDate < DateTime.Now && !t.IsCompleted) ?? 0;
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Task Dashboard</h2>
+
+    <!-- 🔥 STATS CARDS -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div>Total Tasks</div>
+                <div class="stat-number">@total</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div>Completed</div>
+                <div class="stat-number text-success">@completed</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div>Pending</div>
+                <div class="stat-number text-warning">@pending</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div>Overdue</div>
+                <div class="stat-number text-danger">@overdue</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔍 Search -->
+    <form method="get" class="mb-4">
+        <input type="text" name="search" placeholder="Search by title or assignee..." class="form-control" />
+    </form>
+
+    <a href="/Tasks/Create" class="btn btn-primary mb-4">+ Add Task</a>
+
+    <!-- 🧊 TASK CARDS -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var task in Model)
+            {
+                var isOverdue = task.DueDate < DateTime.Now && !task.IsCompleted;
+
+                <div class="col">
+                    <div class="card task-card @(isOverdue ? "border border-danger" : "")">
+                        <div class="card-body">
+
+                            <h5 class="card-title">
+                                @task.Title
+                                <span class="badge @(task.Priority == "High" ? "badge-high" : task.Priority == "Medium" ? "badge-medium" : "badge-low") float-end">
+                                    @task.Priority
+                                </span>
+                            </h5>
+
+                            <p><strong>👤</strong> @task.AssignedTo</p>
+                            <p><strong>📅</strong> @task.DueDate.ToShortDateString()</p>
+                            <p><strong>Status:</strong> @task.Status</p>
+
+                            <div class="mb-2">
+                                <div class="progress">
+                                    <div class="progress-bar"
+                                         style="width:@task.Progress%">
+                                        @task.Progress%
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-3">
+                                <a href="/Tasks/Complete/@task.Id" class="btn btn-modern btn-complete">✔</a>
+                                <a href="/Tasks/Edit/@task.Id" class="btn btn-modern btn-edit">Edit</a>
+                                <a href="/Tasks/Delete/@task.Id" class="btn btn-modern btn-delete">Delete</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col">
+                <div class="stat-card">
+                    <h5>No tasks found</h5>
+                    <p>Add your first task </p>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
