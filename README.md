@@ -37,13 +37,7 @@ making it suitable for demonstrating your software development skills and UI des
 
 # Screenshots
 Dashboard Overview
-![Dashboard](screenshots/dashboard.png)
-
-**Create Task Form**  
-![Create Task](screenshots/create-task.png)
-
-**Edit Task Form**  
-![Edit Task](screenshots/edit-task.png)
+![Dashboard]C:\Users\27817\OneDrive\Pictures\Screenshots 
 
 ---
 
