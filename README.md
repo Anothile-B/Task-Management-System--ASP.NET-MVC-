@@ -37,7 +37,7 @@ making it suitable for demonstrating your software development skills and UI des
 
 # Screenshots
 Dashboard Overview
-![Dashboard]C:\Users\27817\OneDrive\Pictures\Screenshots 
+![taskreminder](C:\Users\27817\OneDrive\Pictures\Screenshots) (Screenshots/taskreminder.png)  
 
 ---
 
