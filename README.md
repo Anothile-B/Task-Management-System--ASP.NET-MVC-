@@ -15,6 +15,11 @@ making it suitable for demonstrating your software development skills and UI des
 
 ---
 
+Live Demo Link
+
+
+---
+
 # Features
 
 - Add, Edit, Delete Tasks: Full CRUD functionality for tasks.  
@@ -35,15 +40,3 @@ making it suitable for demonstrating your software development skills and UI des
 
 ---
 
-# Screenshots
-Dashboard Overview
-![taskreminder](Screenshots\taskreminder.png)  
-
----
-
-## 🚀 Getting Started
-
-1. Clone the repository:
-
-```bash
-git clone git@github.com:Anothile-B/Task-Management-System--ASP.NET-MVC-.git
