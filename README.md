@@ -37,7 +37,7 @@ making it suitable for demonstrating your software development skills and UI des
 
 # Screenshots
 Dashboard Overview
-![taskreminder](screenshots/taskreminder.png)  
+![taskreminder](Screenshots\taskreminder.png)  
 
 ---
 
